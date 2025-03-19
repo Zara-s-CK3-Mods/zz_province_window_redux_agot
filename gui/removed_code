@@ -1,0 +1,102 @@
+removed_code 
+
+					hbox = {
+						datacontext = "[Holding.GetProvince]"
+						layoutpolicy_horizontal = expanding
+						margin = { 2 0 }
+						spacing = 3
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							raw_text = "[zz_iron|E]:"
+							default_format = "#high"
+						}
+						expand = {}
+						icon = {
+							name = "iron_icon"
+							size = { 25 25 }
+							texture = "gfx/interface/icons/lov_icon_iron.dds"
+							tooltip = "[zz_iron]"
+						}
+						text_single = {
+							raw_text = "[GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).ScriptValue('zz_valyria_province_resource_iron_gain')|0] "
+							#min_width = 75
+							default_format = "#high"
+							align = right
+						}
+					}
+					hbox = {
+						datacontext = "[Holding.GetProvince]"
+						layoutpolicy_horizontal = expanding
+						margin = { 2 0 }
+						spacing = 3
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							raw_text = "[zz_steel|E]:"
+							default_format = "#high"
+						}
+						expand = {}
+						icon = {
+							name = "steel_icon"
+							size = { 25 25 }
+							texture = "gfx/interface/icons/lov_icon_steel.dds"
+							tooltip = "[zz_steel]"
+						}
+						text_single = {
+							raw_text = "[GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).ScriptValue('zz_valyria_province_resource_steel_gain')|0] "
+							#min_width = 75
+							default_format = "#high"
+							align = right							
+						}
+					}
+					hbox = {
+						datacontext = "[Holding.GetProvince]"
+						layoutpolicy_horizontal = expanding
+						margin = { 2 0 }
+						spacing = 3
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							raw_text = "[zz_obsidian|E]:"
+							default_format = "#high"
+						}
+						expand = {}
+						icon = {
+							name = "obsidian_icon"
+							size = { 25 25 }
+							texture = "gfx/interface/icons/lov_icon_obsidian.dds"
+							tooltip = "[zz_obsidian]"
+						}
+						text_single = {
+							raw_text = "[GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).ScriptValue('zz_valyria_province_resource_obsidian_gain')|0] "
+							#min_width = 75
+							default_format = "#high"
+							align = right
+						}
+					}
+					hbox = {
+						datacontext = "[Holding.GetProvince]"
+						layoutpolicy_horizontal = expanding
+						margin = { 2 0 }
+						spacing = 3
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							raw_text = "[zz_v_steel|E]:"
+							default_format = "#high"
+						}
+						expand = {}
+						icon = {
+							name = "valyrian_steel_icon"
+							size = { 25 25 }
+							texture = "gfx/interface/icons/lov_icon_valyrian_steel.dds"
+							tooltip = "[zz_valyrian_steel]"
+						}
+						text_single = {
+							raw_text = "[GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).ScriptValue('zz_valyria_province_resource_valyrian_steel_gain')|0] "
+							#min_width = 75
+							default_format = "#high"
+							align = right
+						}
+					}
