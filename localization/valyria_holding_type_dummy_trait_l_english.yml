@@ -8,3 +8,4 @@
  holding_type_03.desc:0 "$game_concept_city_holding_desc$"
  VIST_ON_DRAGON:0 "Take Flight"
  VIST_ON_DRAGON_TT:0 "Visit this location by utilising your Dragon."
+ zz_taske_flight.0210.toast:0 "You land your Dragon"
