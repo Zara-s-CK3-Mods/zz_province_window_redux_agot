@@ -1,5 +1,24 @@
 ﻿namespace = zz_valyria_province
 
+scripted_effect improve_meditation_skill = {
+	if = {
+		limit = {
+			has_variable = meditation_experience
+		}
+		change_variable = {
+			name = meditation_experience
+			add = 1
+		}
+	}
+	else = {
+		set_variable = {
+			name = meditation_experience
+			value = 1
+		}
+	}
+	custom_tooltip = religious_decision.0211.experience
+}
+
 zz_valyria_province.0001 = {
 	hidden = yes
 	immediate = {
