@@ -1845,7 +1845,6 @@ window = {
 
 							### BOTTOM LEFT
 							widget = {
-								parentanchor = bottom|left
 								size = { 380 350 }
 								alwaystransparent = yes
 
