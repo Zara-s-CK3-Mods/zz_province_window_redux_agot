@@ -2635,11 +2635,11 @@ window = {
 			}
 	}
 	#AGOT Added
-	agot_county_view_ruins_blocker = {}
+	#agot_county_view_ruins_blocker = {}
 	agot_county_view_ruins_reconstruct_confirm = {}
 	holding_type_swap_selection_view = {}
 	dragon_swap_pit_selection_view = {}
-	zz_agot_county_view_ruins_blocker = {}
+	#zz_agot_county_view_ruins_blocker = {}
 	zz_agot_county_view_ruins_reconstruct_confirm = {}
 }
 
