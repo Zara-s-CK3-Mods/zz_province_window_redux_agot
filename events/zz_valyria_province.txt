@@ -1,6 +1,6 @@
 ﻿namespace = zz_valyria_province
 
-scripted_effect improve_meditation_skill = {
+scripted_effect zz_improve_meditation_skill = {
 	if = {
 		limit = {
 			has_variable = meditation_experience
@@ -617,17 +617,17 @@ zz_valyria_province.0211 = {
 		if = {
 			limit = {has_character_flag = meditation_minor_stress_loss }
 			add_stress = minor_stress_loss
-			improve_meditation_skill = yes
+			zz_improve_meditation_skill = yes
 		}
 		else_if = {
 			limit = {has_character_flag = meditation_medium_stress_loss }
 			add_stress = medium_stress_loss
-			improve_meditation_skill = yes
+			zz_improve_meditation_skill = yes
 		}
 		else_if = {
 			limit = {has_character_flag = meditation_major_stress_loss }
 			add_stress = major_stress_loss
-			improve_meditation_skill = yes
+			zz_improve_meditation_skill = yes
 		}
 		else_if = {
 			limit = {has_character_flag = meditation_reflection }
@@ -673,17 +673,17 @@ zz_valyria_province.0211 = {
 					add_trait_force_tooltip = calm
 				}
 			}
-			improve_meditation_skill = yes
+			zz_improve_meditation_skill = yes
 		}
 		else_if = {
 			limit = {has_character_flag = meditation_fugue }
 			add_learning_skill = 2
-			improve_meditation_skill = yes
+			zz_improve_meditation_skill = yes
 		}
 		else_if = {
 			limit = {has_character_flag = meditation_epiphany }
 			add_learning_skill = 1
-			improve_meditation_skill = yes
+			zz_improve_meditation_skill = yes
 		}
 		else_if = {
 			limit = {has_character_flag = meditation_impatient }
