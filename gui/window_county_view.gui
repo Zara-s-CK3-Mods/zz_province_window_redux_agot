@@ -52,7 +52,6 @@ window = {
 		on_start = "[GetVariableSystem.Clear( 'hide_bottom_left_HUD' )]"
 		#AGOT Added
 		on_start = "[GetVariableSystem.Clear( 'window_ruins_confirm' )]"
-	
 
 		using = Animation_FadeOut_Standard
 		using = Sound_WindowHide_Standard
@@ -66,6 +65,7 @@ window = {
 			margin_right = 40
 			margin_top = 35
 			alwaystransparent = no
+
 			datacontext = "[HoldingView.GetHolding]"
 			datacontext = "[HoldingView.GetProvince]"
 			datacontext = "[HoldingView.GetHolder]"
@@ -175,23 +175,6 @@ window = {
 							}
 							onclick = "[GetVariableSystem.Set('county_view','county')]"
 							down = "[GetVariableSystem.HasValue('county_view','county')]"
-						}
-						button_tab = {
-							layoutpolicy_horizontal = expanding
-							#visible = "[GetPlayer.GetGovernment.IsType( 'freehold_government' )]"
-							text_single = {
-								layoutpolicy_horizontal = expanding	
-								minimumsize = { 100 38 }
-								margin = { 10 10 }
-								raw_text = "Trading Post"
-								alwaystransparent = yes
-								resizeparent = yes
-								align = center|nobaseline
-								default_format = "#low"
-							}
-							onclick = "[GetVariableSystem.Set('county_view','trading_post')]"
-							down = "[GetVariableSystem.HasValue('county_view','trading_post')]"
-							visible = "[GetScriptedGui('zz_valyria_trading_post_tab_enable').IsShown( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
 						}
 						button_tab = {
 							layoutpolicy_horizontal = expanding
@@ -657,34 +640,38 @@ window = {
 						margin_left = 5
 						margin_bottom = 10
 
+						spacing = 2
+
 						text_single = {
 							layoutpolicy_horizontal = expanding
+							autoresize = no
+							
 							text = "HOLDING_VIEW_COUNTY_HOLDER"
 							default_format = "#low"
 						}
 
-						text_multi = {
+						text_single = {
 							datacontext = "[HoldingView.GetCountyTitle.GetHolder]"
 							visible = "[And(Character.HasRelationTo( GetPlayer ), Not(Character.IsPlayer))]"
+							
 							layoutpolicy_horizontal = expanding
+							autoresize = no
 
 							text = "[Character.GetRelationToString( GetPlayer )]"
-							autoresize = yes
-							max_width = 170
-
+							
 							tooltip = "EXTENDED_RELATIONS_TOOLTIP"
 
 						}
 
 						text_multi = {
 							datacontext = "[HoldingView.GetCountyTitle.GetHolder]"
+							
 							layoutpolicy_horizontal = expanding
+							autoresize = no
+							size = { 230 60 }
 
 							text = "[Character.GetShortUINameNoTooltip|U]"
-							autoresize = yes
 							default_format = "#high"
-							max_width = 170
-
 						}
 
 						expand = {}
@@ -877,8 +864,6 @@ window = {
 								}
 
 								background = {
-									#AGOT Modified
-									# visible = "[EqualTo_CFixedPoint( Culture.GetAcceptance( GetPlayer.GetCulture ), '(CFixedPoint)0') ) ]"
 									visible = "[EqualTo_CFixedPoint( Culture.GetAcceptance( GetPlayer.GetCulture ), '(CFixedPoint)0')]"
 									margin = { 5 0 }
 									using = Status_Bad
@@ -1087,12 +1072,8 @@ window = {
 				}
 
 				background = {
-					using = Background_Area_Dark
-					margin_left = 5
-					margin_top = 3
-				}
-
-				background = {
+					#AGOT Modified
+					# visible = "[HoldingView.HasHolding]"
 					visible = "[And(HoldingView.HasHolding, ProvinceIsNotWilderness)]"
 					texture = "[HoldingView.GetHolding.GetIllustration]"
 					alpha = 0.8
@@ -1107,7 +1088,9 @@ window = {
 				}
 
 				background = {
-					visible = "[And(HoldingView.HasHolding, ProvinceIsNotWilderness)]"
+					#AGOT Modified
+					# visible = "[Not(HoldingView.HasHolding)]"
+					visible = "[Or(Not(HoldingView.HasHolding), Not(ProvinceIsNotWilderness))]"
 					texture = "[HoldingView.GetProvince.GetTerrain.GetIllustration]"
 					alpha = 0.7
 
@@ -2067,11 +2050,10 @@ window = {
 							# visible = "[And(HoldingView.HasSpecialBuildingSlot, HoldingView.GetHolding.GetType.HasParameter('no_buildings'))]"
 							visible = "[And(And(HoldingView.HasSpecialBuildingSlot, HoldingView.GetHolding.GetType.HasParameter('no_buildings')), ProvinceIsNotUnknown)]"
 
-							button_standard = {
+							highlight_icon = {
 								size = { 100% 100% }
-								texture = "gfx/interface/buttons/button_special_building.dds"
-								alwaystransparent = yes
-								spriteborder = { 20 20 }
+
+								using = Special_Building_Texture
 							}
 						}
 					}
@@ -2347,75 +2329,6 @@ window = {
 							}
 						}
 					}
-				}
-			}
-			####################################
-			########## Trading Post INFO ############
-			####################################
-			margin_widget = {
-				name = "tradepost_info"
-				layoutpolicy_horizontal = expanding
-				layoutpolicy_vertical = expanding
-				minimumsize = { 0 200 }
-				margin = { 10 5 }
-				margin_bottom = 10
-				margin_right = 15
-				scissor = yes
-				visible = "[GetVariableSystem.HasValue('county_view','trading_post')]"
-				state = {
-					name = "holding_view_refresh"
-					next = a
-					alpha = 0.5
-				}
-
-				state = {
-					name = "a"
-					alpha = 1
-					duration = 0.5
-					using = Animation_Curve_Default
-				}
-
-				background = {
-					using = Background_Area_Dark
-					margin_left = 5
-					margin_top = 3
-				}
-
-				background = {
-					visible = "[GetScriptedGui('zz_valyria_has_trading_post').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
-					texture = "gfx/interface//illustrations/magic_casting/zz_magic_trading_post.dds"
-					margin = { 10 10 }
-					fittype = centercrop
-					alpha = 1
-								
-					using = Mask_Rough_Edges
-		
-					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
-						blend_mode = alphamultiply
-						mirror = vertical
-					}
-				}
-				vbox = {
-					text_single = {
-						raw_text = "Trading Post"
-						fontsize = 24
-						align = top
-					}
-				}
-
-				hbox = {
-					layoutpolicy_horizontal = expanding
-					vbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding 
-
-					}
-					vbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding 
-					}
-
 				}
 			}
 			####################################
