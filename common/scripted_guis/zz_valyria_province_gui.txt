@@ -179,6 +179,7 @@ zz_valyria_province_cast_click = {
 	}
 	effect = {
 		save_scope_as = actor 
+
 		set_variable = {
 			name = zz_selected_mystery_province 
 			value = scope:selected_province

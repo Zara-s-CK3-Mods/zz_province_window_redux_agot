@@ -30,7 +30,7 @@ zz_valyria_province.0001 = {
 			}
 		}
 		trigger_event = {
-			id = religious_decision.0211
+			id = zz_valyria_province.0211
 			days = meditation_duration
 		}
 	}
