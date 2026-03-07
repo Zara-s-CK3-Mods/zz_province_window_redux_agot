@@ -156,6 +156,8 @@ window = {
 							fontsize_min = 10
 							max_width = 420
 						}
+						#AGOT Added
+						agot_county_view_foreign_county_iron_throne = {}
 					}
 					hbox = {
 						layoutpolicy_horizontal = expanding
@@ -2283,21 +2285,31 @@ window = {
 
 
 								flowcontainer = {
-									visible = "[Or(HoldingView.HasDuchyCapitalBuildingSlot, HoldingView.HasSpecialBuildingSlot )]"
+									visible = "[Or(HoldingView.HasDuchyCapitalBuildingSlot, Or( HoldingView.HasSpecialBuildingSlot, HoldingView.HasGreatBuildingSlot ) )]"
 									ignoreinvisible = yes
 									margin_left = 3
 
 									widget_building_item = {
 										name = "duchy_capital_building"
 										datacontext = "[HoldingView.GetGUIDuchyCapitalBuilding]"
-										visible = "[HoldingView.HasDuchyCapitalBuildingSlot]"
+										#AGOT Modified
+										# visible = "[HoldingView.HasDuchyCapitalBuildingSlot]"
+										visible = "[And(HoldingView.HasDuchyCapitalBuildingSlot, ProvinceIsNotWilderness)]"
 
-										button_standard = {
-											size = { 100% 100% }
-											texture = "gfx/interface/buttons/button_duchy_capital.dds"
-											alwaystransparent = yes
-											spriteType = Corneredtiled
-											spriteborder = { 18 18 }
+										blockoverride "building_frame" {
+											icon = {
+												size = { 100% 100% }
+												texture = "gfx/interface/buttons/button_duchy_capital.dds"
+												alwaystransparent = yes
+												spriteType = Corneredtiled
+												spriteborder = { 18 18 }
+												framesize = { 252 80 }
+
+												modify_texture = {
+													texture = "gfx/interface/colors/gold.dds"
+													alpha = 0.2
+												}
+											}
 										}
 									}
 
@@ -2308,14 +2320,53 @@ window = {
 									widget_building_item = {
 										name = "special_building"
 										datacontext = "[HoldingView.GetGUISpecialBuilding]"
-										visible = "[HoldingView.HasSpecialBuildingSlot]"
+										#AGOT Modified
+										# visible = "[HoldingView.HasSpecialBuildingSlot]"
+										visible = "[And(HoldingView.HasSpecialBuildingSlot, ProvinceIsNotWilderness)]"
 
-										button_standard = {
-											size = { 100% 100% }
-											texture = "gfx/interface/buttons/button_special_building.dds"
-											alwaystransparent = yes
-											spriteType = Corneredtiled
-											spriteborder = { 18 18 }
+										blockoverride "building_frame" {
+											icon = {
+												size = { 100% 100% }
+												alwaystransparent = yes
+
+												using = Special_Building_Texture												
+
+												modify_texture = {
+													texture = "gfx/interface/colors/gold.dds"
+													alpha = 0.2
+												}
+											}
+										}
+									}
+
+									spacer = {
+										size = { 3 0 }
+									}
+									widget_building_item = {
+										name = "great_building"
+										datacontext = "[HoldingView.GetGUIGreatBuilding]"
+										visible = "[HoldingView.HasGreatBuildingSlot]"
+
+										blockoverride "building_frame" {
+											icon = {
+												size = { 100% 100% }
+												texture = "gfx/interface/buttons/button_great_building.dds"
+												alwaystransparent = yes
+												spriteType = Corneredtiled
+												spriteborder = { 18 18 }
+												framesize = { 252 80 }
+
+												modify_texture = {
+													texture = "gfx/interface/colors/gold.dds"
+													alpha = 0.2
+												}
+											}
+										}
+										warning_icon = {
+											name = "ruined_great_building"
+											visible = "[GUIBuildingItem.IsBuildingRuined]"
+											position = { 3 3 }
+											size = { 20 20 }
 										}
 									}
 
@@ -2596,7 +2647,6 @@ window = {
 			}
 	}
 	#AGOT Added
-	agot_county_view_ruins_blocker = {}
 	agot_county_view_ruins_reconstruct_confirm = {}
 	holding_type_swap_selection_view = {}
 	dragon_swap_pit_selection_view = {}
@@ -4205,6 +4255,7 @@ types CountyViewTypes
 			}
 		}
 	}
+	
 
 	type holding_type_swap_selection_view = window
 	{
@@ -4384,4 +4435,14 @@ types CountyViewTypes
 			}
 		}
 	}
+}
+
+template Special_Building_Texture 
+{
+	texture = "gfx/interface/buttons/button_special_building.dds"
+
+	spriteType = Corneredtiled
+	spriteborder = { 18 18 }
+
+	framesize = { 252 80 }
 }
