@@ -1875,7 +1875,7 @@ window = {
 
 							### BOTTOM LEFT
 							widget = {
-								size = { 380 350 }
+								size = { 400 450 }
 								alwaystransparent = yes
 
 								background = {
@@ -1945,8 +1945,8 @@ window = {
 										parentanchor = top|left		
 										layoutpolicy_vertical = expanding
 										layoutpolicy_horizontal = expanding
-										max_width = 350
-										max_height = 190
+										max_width = 380
+										max_height = 400
 										spacer = { size = { 0 30 } }
 										scrollbox = {
 											visible = "[And(HoldingView.HasHolding, Not(HoldingView.IsBeingConstructed))]"
@@ -1958,7 +1958,7 @@ window = {
 												fixedgridbox = {
 													addcolumn = 60
 													addrow = 65
-													datamodel_wrap = 5
+													datamodel_wrap = 6
 													flipdirection = yes
 								
 													datamodel = "[HoldingView.GetBuildings]"
