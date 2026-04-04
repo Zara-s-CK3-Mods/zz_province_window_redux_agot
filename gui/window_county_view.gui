@@ -1066,13 +1066,6 @@ window = {
 					margin_top = 3
 				}
 
-				state = {
-					name = "a"
-					alpha = 1
-					duration = 0.5
-					using = Animation_Curve_Default
-				}
-
 				background = {
 					#AGOT Modified
 					# visible = "[HoldingView.HasHolding]"
@@ -2342,6 +2335,7 @@ window = {
 									spacer = {
 										size = { 3 0 }
 									}
+
 									widget_building_item = {
 										name = "great_building"
 										datacontext = "[HoldingView.GetGUIGreatBuilding]"
@@ -3373,7 +3367,6 @@ window = {
 												text_single = {
 													datacontext = "[GUITrackItem.GetSelectedBuilding]"
 													visible = "[InDebugMode]"
-													
 													layoutpolicy_horizontal = expanding
 
 													text = "BUILDING_DEBUG_FULL"
@@ -3940,7 +3933,6 @@ types CountyViewTypes
 				visible = "[GUIBuildingItem.IsBuildingDisabled]"
 				position = { 3 3 }
 				size = { 20 20 }
-
 			}
 		}
 
