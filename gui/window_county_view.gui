@@ -2407,7 +2407,7 @@ window = {
 					margin_top = 3
 				}
 				background = {
-					texture = "gfx/interface//illustrations/magic_casting/zz_magic_dragon_pit.dds"
+					texture = "gfx/interface//illustrations/zz_magic_dragon_pit.dds"
 					margin = { 10 10 }
 					fittype = centercrop
 					alpha = 1

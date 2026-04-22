@@ -4,5 +4,5 @@ tags={
 	"Gameplay"
 }
 name="AGOT - Province Window Redux"
-supported_version="1.18.2"
+supported_version="1.18.4"
 remote_file_id="3446295472"
