@@ -11,35 +11,12 @@ window = {
 	layer = windows_layer
 	#AGOT Modified
 	# size = { 605 750 }
-	size = { 797 895 }
-
-	background = {
-		texture = "gfx/interface/component_tiles/tile_window_background_subwindow.dds"
-		spriteType = Corneredtiled
-		spriteborder = { 18 18 }
-		margin = { -23 -17 }
-		margin_left = 20
-		margin_bottom = 20
-		texture_density = 2
-
-		modify_texture = {
-			name = "overlay"
-			texture = "gfx/interface/component_overlay/overlay_effect.dds"
-			spriteType = Corneredstretched
-			spriteborder = { 0 0 }
-			blend_mode = overlay
-		}
-	}
-	
+	size = { 760 850 }
 
 	state = {
 		name = _show
 		on_start = "[GetVariableSystem.Set( 'county_view_open', 'true' )]"
 		on_start = "[GetVariableSystem.Set( 'hide_bottom_left_HUD', 'true' )]"
-		on_start  = "[GetVariableSystem.Set('county_view','county')]"
-		on_start = "[GetScriptedGui('zz_valyria_dragon_pit_tab').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
-		
-		
 
 		using = Animation_FadeIn_Standard
 		using = Sound_WindowShow_Standard
@@ -61,6 +38,14 @@ window = {
 	alwaystransparent = yes
 
 	vbox = {
+		layoutpolicy_horizontal = expanding
+		expand = {
+			ignoreinvisible = yes
+			layoutpolicy_vertical = expanding
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
 			name = "window_content"
 			margin_right = 40
 			margin_top = 35
@@ -70,6 +55,24 @@ window = {
 			datacontext = "[HoldingView.GetProvince]"
 			datacontext = "[HoldingView.GetHolder]"
 			datacontext = "[Province.GetCounty]"
+
+			background = {
+				texture = "gfx/interface/skinned/tile_window_background_subwindow.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 18 18 }
+				margin = { -23 -17 }
+				margin_left = 20
+				margin_bottom = 20
+				texture_density = 2
+
+				modify_texture = {
+					name = "overlay"
+					texture = "gfx/interface/component_overlay/overlay_effect.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+				}
+			}
 
 			hbox = {
 				name = "county_header"
@@ -157,46 +160,10 @@ window = {
 							max_width = 420
 						}
 						#AGOT Added
+						##onclick = "[GetScriptedGui('zz_valyria_dragon_pit_view').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
+						#visible = "[GetScriptedGui('zz_valyria_dragon_pit_tab').IsShown( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
 						agot_county_view_foreign_county_iron_throne = {}
 					}
-					hbox = {
-						layoutpolicy_horizontal = expanding
-						margin_bottom = -5
-
-						button_tab = {		
-							layoutpolicy_horizontal = expanding	
-							text_single = {
-								layoutpolicy_horizontal = expanding	
-								minimumsize = { 100 38 }
-								margin = { 10 10 }
-								raw_text = "County"
-								alwaystransparent = yes
-								resizeparent = yes
-								align = center|nobaseline
-								default_format = "#low"
-							}
-							onclick = "[GetVariableSystem.Set('county_view','county')]"
-							down = "[GetVariableSystem.HasValue('county_view','county')]"
-						}
-						button_tab = {
-							layoutpolicy_horizontal = expanding
-							text_single = {
-								layoutpolicy_horizontal = expanding	
-								minimumsize = { 100 38 }
-								margin = { 10 10 }
-								raw_text = "Dragon Pit"
-								alwaystransparent = yes
-								resizeparent = yes
-								align = center|nobaseline
-								default_format = "#low"
-							}
-							onclick = "[GetVariableSystem.Set('county_view','dragon_pit')]"
-							down = "[GetVariableSystem.HasValue('county_view','dragon_pit')]"
-							onclick = "[GetScriptedGui('zz_valyria_dragon_pit_view').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
-							visible = "[GetScriptedGui('zz_valyria_dragon_pit_tab').IsShown( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
-						}
-					}
-					agot_county_view_foreign_county_iron_throne = {}
 				}
 
 				expand = {}
@@ -240,6 +207,12 @@ window = {
 						onclick = "[OpenFromViewHistory]"
 						tooltip = "[GetViewHistoryTooltip]"
 					}
+					
+					blockoverride "button_next" {
+						onclick = "[HoldingView.GoToNextCounty]"
+						enabled = "[HoldingView.CanGoToNextCounty]"
+						tooltip = "YOUR_NEXT_HOLDING"
+					}
 
 					blockoverride "button_close"
 					{
@@ -276,7 +249,7 @@ window = {
 				expand = {}
 
 				widget = {
-					size = { 300 50 }
+					layoutpolicy_horizontal = expanding
 					scissor = yes
 
 					hbox = {
@@ -895,25 +868,6 @@ window = {
 
 						using = tooltip_ne
 
-						tooltipwidget = {
-
-							faith_tooltip = {
-
-								blockoverride "extra_info" {
-									using = faith_tooltip_click_default_extra_info
-
-									text_single = {
-										margin = { 10 0 }
-										layoutpolicy_horizontal = expanding
-										fonttintcolor = "[TooltipInfo.GetTintColor]"
-										using = DefaultTooltipText
-										visible = "[Not( ObjectsEqual( Faith.Self, GetPlayer.GetFaith ) )]"
-										text = "COUNTY_NOT_YOUR_FAITH"
-									}
-								}
-							}
-						}
-
 						text_single = {
 							layoutpolicy_horizontal = expanding
 							text = "HOLDING_VIEW_FAITH_LABEL"
@@ -934,27 +888,52 @@ window = {
 						button_group = {
 							onclick = "[OpenGameViewData( 'faith', Faith.GetID )]"
 
-							text_single = {
-								visible = "[EqualTo_uint32(Faith.GetID, GetPlayer.GetFaith.GetID)]"
-								text = "WINDOW_COUNTY_FAITH_NAME"
-								default_format = "#high"
-								margin_right = 5
-								max_width = 160
-
-							}
-
-							text_single = {
-								visible = "[NotEqualTo_uint32(Faith.GetID, GetPlayer.GetFaith.GetID)]"
-								text = "WINDOW_COUNTY_FAITH_NAME"
-								default_format = "#high"
-								margin = { 5 0 }
-								max_width = 160
-
-								background = {
-									margin = { 5 0 }
-									using = Status_Bad
+							tooltipwidget = {
+	
+								faith_tooltip = {
+	
+									blockoverride "extra_info" {
+										using = faith_tooltip_click_default_extra_info
+	
+										text_single = {
+											margin = { 10 0 }
+											layoutpolicy_horizontal = expanding
+											fonttintcolor = "[TooltipInfo.GetTintColor]"
+											using = DefaultTooltipText
+											visible = "[Not( ObjectsEqual( Faith.Self, GetPlayer.GetFaith ) )]"
+											text = "COUNTY_NOT_YOUR_FAITH"
+										}
+									}
 								}
 							}
+							
+							flowcontainer = {
+								ignoreinvisible = yes
+								resizeparent = yes
+								
+								text_single = {
+									visible = "[EqualTo_uint32(Faith.GetID, GetPlayer.GetFaith.GetID)]"
+									text = "WINDOW_COUNTY_FAITH_NAME"
+									default_format = "#high"
+									margin_right = 5
+									max_width = 160
+									
+								}
+								
+								text_single = {
+									visible = "[NotEqualTo_uint32(Faith.GetID, GetPlayer.GetFaith.GetID)]"
+									text = "WINDOW_COUNTY_FAITH_NAME"
+									default_format = "#high"
+									margin = { 5 0 }
+									max_width = 160
+									
+									background = {
+										margin = { 5 0 }
+										using = Status_Bad
+									}
+								}
+							}
+
 						}
 					}
 				}
@@ -973,9 +952,11 @@ window = {
 					spacing = 5
 
 					item = {
-						button_tab_dark = {
+						button_tab_icon_only = {
 							datacontext = "[GUICountyHolding.GetHolding]"
 							size = { 45 45  }
+
+							using = TabShortcut
 
 							down = "[GUICountyHolding.IsSelected]"
 							alwaystransparent = "[GUICountyHolding.IsSelected]"
@@ -985,26 +966,44 @@ window = {
 							using = tooltip_ne
 							tooltipwidget = { holding_tooltip_click = {} }
 
-							icon_building_tab = {
+							widget = {
 								parentanchor = center
 								position = { 0 1 }
 								size = { 35 30 }
-								texture = "[GUICountyHolding.GetHolding.GetType.GetTabIcon]"
-								alwaystransparent = yes
+								alwaystransparent = yes								
 
-								down = "[GUICountyHolding.IsSelected]"
+								button_icon_highlight = {
+									visible = "[Not(GUICountyHolding.GetHolding.CanConstructAnyBuilding(GetPlayer))]"
+									size = { 100% 100% }
+									
+									down = "[GUICountyHolding.IsSelected]"
+									texture = "[GUICountyHolding.GetHolding.GetType.GetTabIcon]"					
 
+									alpha = "[Select_float(  GUICountyHolding.IsSelected, '(float)0.85', '(float)1' )]"				
+									blockoverride "button_frames"
+									{
+										gfxtype = togglepushbuttongfx
+										effectname = "NoHighlight"
 
-								blockoverride "button_frames"
-								{
-									gfxtype = togglepushbuttongfx
-									effectname = "NoHighlight"
-									upframe = 4
-									uphoverframe = 5
-									uppressedframe = 6
-									downframe = 5
+										upframe = 7
+										uphoverframe = 5
+										uppressedframe = 6
+										downframe = 5
+										downhoverframe = 5
+										downpressedframe = 5
+										disableframe = 3
+									}
+								}
+
+								button_icon_highlight = {
+									visible = "[GUICountyHolding.GetHolding.CanConstructAnyBuilding(GetPlayer)]"
+									size = { 100% 100% }
+									
+									down = "[GUICountyHolding.IsSelected]"
+									texture = "[GUICountyHolding.GetHolding.GetType.GetTabIcon]"
 								}
 							}
+							
 
 							icon = {
 								name = "realm_capital_icon"
@@ -1035,16 +1034,13 @@ window = {
 			####################################
 			########## HOLDING INFO ############
 			####################################
-			margin_widget = {
+			vbox = {
 				name = "holding_info"
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
-				minimumsize = { 0 200 }
-				margin = { 10 5 }
-				margin_bottom = 10
-				margin_right = 15
-				scissor = yes
-				visible = "[GetVariableSystem.HasValue('county_view','county')]"
+				minimumsize = { 0 320 }
+				margin = { 5 5 }
+				#AGOT Added
 				agot_county_view_settlement_buttons = {}
 
 				state = {
@@ -1148,6 +1144,31 @@ window = {
 
 										tooltip = "CUSTOMIZE_TITLE"
 									}
+									
+									widget = {
+										size = { 20 25 }
+										visible = "[HoldingView.HasHolding]"
+										datacontext = "[HoldingView.GetProvince]"
+										
+										button_pin = {
+											shortcut = "pin"
+											parentanchor = center
+											tooltip = "PROVINCE_PIN_TT"
+											position = { 0 2 }
+											onclick = "[Province.ToggleProvincePinned]"
+											visible = "[Not(Province.IsPinned)]"
+										}
+										
+										button_unpin = {
+											shortcut = "pin"
+											parentanchor = center
+											tooltip = "PROVINCE_PIN_TT"
+											position = { 0 2 }
+											onclick = "[Province.ToggleProvincePinned]"
+											visible = "[Province.IsPinned]"
+										}
+									}
+									
 
 									widget = {
 										size = { 30 30 }
@@ -1432,7 +1453,7 @@ window = {
 						#AGOT Added
 						visible = "[ProvinceIsNotHidden]"
 
-						margin = { 25 0 }
+						margin = { 15 0 }
 						margin_bottom = 10
 						minimumsize = { 200 0 }
 						spacing = 5
@@ -1866,166 +1887,8 @@ window = {
 							
 							
 
-							### BOTTOM LEFT
-							widget = {
-								size = { 400 450 }
-								alwaystransparent = yes
-
-								background = {
-									#AGOT Modified, Ruins
-									#visible = "[And(NotEqualTo_uint32( HoldingView.GetCountyTitle.GetHolder.GetID, HoldingView.GetTitle.GetLesseeOrHolder.GetID ), HoldingView.GetTitle.HasHolder)]"
-									visible = "[And(And(NotEqualTo_uint32( HoldingView.GetCountyTitle.GetHolder.GetID, HoldingView.GetTitle.GetLesseeOrHolder.GetID ), HoldingView.GetTitle.HasHolder), Not(HoldingView.GetTitle.GetHolder.HasTrait(GetTrait('ruin').Self)))]"
-									texture = "gfx/interface/component_masks/patterns/mask_pattern_02.dds"
-									spriteType = Corneredtiled
-									using = Color_Blue
-									alpha = 0.6
-									margin_bottom = 10
-									margin_left = 5
-
-									modify_texture = {
-										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
-										blend_mode = alphamultiply
-										alpha = 0.9
-										mirror = horizontal
-									}
-
-									modify_texture = {
-										texture = "gfx/interface/component_masks/mask_texture_01.dds"
-										spriteType = Corneredtiled
-										spriteborder = { 15 15 }
-										blend_mode = alphamultiply
-									}
-
-									modify_texture = {
-										texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
-										blend_mode = alphamultiply
-										mirror = vertical
-									}
-								}
-
-								background = {
-									visible = "[And(NotEqualTo_uint32( HoldingView.GetCountyTitle.GetHolder.GetID, HoldingView.GetTitle.GetLesseeOrHolder.GetID ), HoldingView.GetTitle.HasHolder)]"
-									texture = "gfx/interface/component_masks/mask_frame.dds"
-									spriteType = Corneredstretched
-									spriteborder = { 15 15 }
-									using = Color_Blue
-									alpha = 0.6
-									margin_bottom = 10
-									margin_left = 5
-
-									modify_texture = {
-										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
-										blend_mode = alphamultiply
-										alpha = 0.9
-										mirror = horizontal
-									}
-
-									modify_texture = {
-										texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
-										blend_mode = alphamultiply
-										mirror = vertical
-									}
-								}
-								
-								vbox = {
-									visible = "[And( HoldingView.HasHolding, Not(HoldingView.IsBeingConstructed) ) ]"
-									expand = {
-										#visible = "[Not(And(HoldingView.HasDuchyCapitalBuildingSlot, HoldingView.HasSpecialBuildingSlot ))]"
-									}
-									
-									vbox = {	
-										visible = "[And(HoldingView.HasHolding, Not(HoldingView.IsBeingConstructed))]"
-										parentanchor = top|left		
-										layoutpolicy_vertical = expanding
-										layoutpolicy_horizontal = expanding
-										max_width = 380
-										max_height = 400
-										spacer = { size = { 0 30 } }
-										scrollbox = {
-											visible = "[And(HoldingView.HasHolding, Not(HoldingView.IsBeingConstructed))]"
-											layoutpolicy_vertical = expanding
-											layoutpolicy_horizontal = expanding
-								
-								
-											blockoverride "scrollbox_content" {
-												fixedgridbox = {
-													addcolumn = 60
-													addrow = 65
-													datamodel_wrap = 6
-													flipdirection = yes
-								
-													datamodel = "[HoldingView.GetBuildings]"
-								
-													item = {
-														widget_building_item_01 = {}
-													}
-												}
-											}
-										}
-										expand = {}
-
-									}
-									### start ADD BUILDING SLOT ###
-									hbox = {
-										layoutpolicy_vertical = expanding
-										layoutpolicy_horizontal = expanding
-										button_standard = {
-											name = "expand_holding_slots"
-											datacontext = "[HoldingView.GetGUIHoldingBuilding]"
-											datacontext = "[HoldingView.GetTitle]"
-											datacontext = "[HoldingView.GetHolder]"
-											oversound = "event:/SFX/UI/Generic/sfx_ui_generic_pointer_over"
-											clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
-											enabled = "[GetScriptedGui('zz_valyria_province').IsValid( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End )]"
-											visible  = "[GetScriptedGui('zz_valyria_province').IsShown( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End )]"
-											tooltip = "[GetScriptedGui('zz_valyria_province').BuildTooltip( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End)]"
-											onclick = "[GetScriptedGui('zz_valyria_province').Execute( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End )]"
-					
-											#onclick = "[Character.OpenPlayerInteractionWithTargetTitle('adding_building_slot_interaction', Title.Self)]"
-											text_single = {
-												minimumsize = { 100 38 }
-												margin = { 10 10 }
-												raw_text = "Add Building Slot"
-												alwaystransparent = yes
-												resizeparent = yes
-												align = center|nobaseline
-												default_format = "#low"
-											}
-										}
-										button_standard = {
-											name = "swap_holding_type"
-											datacontext = "[HoldingView.GetGUIHoldingBuilding]"
-											datacontext = "[HoldingView.GetTitle]"
-											datacontext = "[HoldingView.GetHolder]"
-											oversound = "event:/SFX/UI/Generic/sfx_ui_generic_pointer_over"
-											clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
-											enabled = "[GetScriptedGui('zz_valyria_province').IsValid( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End )]"
-											visible  = "[GetScriptedGui('zz_valyria_province').IsShown( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End )]"
-											#tooltip = "[GetScriptedGui('zz_valyria_province').BuildTooltip( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End)]"
-											#onclick = "[GetScriptedGui('zz_valyria_province').Execute( GuiScope.SetRoot(HoldingView.GetProvince.MakeScope).AddScope('player', GetPlayer.MakeScope).End )]"
-											#onclick = "[HoldingView.OnConstructHoldingClick]"
-											onclick = "[GetScriptedGui('zz_valyria_province_holding_list').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).End )]"
-											onclick = "[GetVariableSystem.Set('swap_holding','open')]"
-											#onclick = "[Character.OpenPlayerInteractionWithTargetTitle('adding_building_slot_interaction', Title.Self)]"
-											text_single = {
-												minimumsize = { 100 38 }
-												margin = { 10 10 }
-												raw_text = "Swap Holding"
-												alwaystransparent = yes
-												resizeparent = yes
-												align = center|nobaseline
-												default_format = "#low"
-											}
-										}
-									}
-
-									### end ADD BUILDING SLOT ###
-									
-									expand = {
-										#visible = "[And(HoldingView.HasDuchyCapitalBuildingSlot, HoldingView.HasSpecialBuildingSlot )]"
-									}
-								}
-							}
+							zz_building_scroll_grid = {}
+							
 						}
 					}
 
@@ -2288,7 +2151,11 @@ window = {
 										#AGOT Modified
 										# visible = "[HoldingView.HasDuchyCapitalBuildingSlot]"
 										visible = "[And(HoldingView.HasDuchyCapitalBuildingSlot, ProvinceIsNotWilderness)]"
-
+										
+										blockoverride "shortcut" {
+											shortcut = "duchy_building"
+										}
+										
 										blockoverride "building_frame" {
 											icon = {
 												size = { 100% 100% }
@@ -2316,6 +2183,10 @@ window = {
 										#AGOT Modified
 										# visible = "[HoldingView.HasSpecialBuildingSlot]"
 										visible = "[And(HoldingView.HasSpecialBuildingSlot, ProvinceIsNotWilderness)]"
+										
+										blockoverride "shortcut" {
+											shortcut = "special_building"
+										}
 
 										blockoverride "building_frame" {
 											icon = {
@@ -2340,6 +2211,10 @@ window = {
 										name = "great_building"
 										datacontext = "[HoldingView.GetGUIGreatBuilding]"
 										visible = "[HoldingView.HasGreatBuildingSlot]"
+										
+										blockoverride "shortcut" {
+											shortcut = "great_building"
+										}
 
 										blockoverride "building_frame" {
 											icon = {
@@ -2373,278 +2248,14 @@ window = {
 								}
 							}
 						}
+						expand = {}
 					}
 				}
 			}
-			####################################
-			########## Dragon Pit INFO ############
-			####################################
-			margin_widget = {
-				name = "dragon_pit_info"
-				layoutpolicy_horizontal = expanding
-				layoutpolicy_vertical = expanding
-				minimumsize = { 0 200 }
-				margin = { 10 10 }
-				scissor = yes
-				visible = "[GetVariableSystem.HasValue('county_view','dragon_pit')]"
-				state = {
-					name = "holding_view_refresh"
-					next = a
-					alpha = 0.5
-					on_start = "[GetScriptedGui('zz_valyria_dragon_pit_tab').IsShown( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('zz_county', HoldingView.GetProvince.MakeScope).End )]"
-				}
-
-				state = {
-					name = "a"
-					alpha = 1
-					duration = 0.5
-					using = Animation_Curve_Default
-				}
-
-				background = {
-					using = Background_Area_Dark
-					margin_left = 5
-					margin_top = 3
-				}
-				background = {
-					texture = "gfx/interface//illustrations/zz_magic_dragon_pit.dds"
-					margin = { 10 10 }
-					fittype = centercrop
-					alpha = 1
-								
-					using = Mask_Rough_Edges
-		
-					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
-						blend_mode = alphamultiply
-						mirror = vertical
-					}
-				}
-				hbox = {
-					layoutpolicy_horizontal = expanding
-					vbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding 
-						vbox = {
-							layoutpolicy_horizontal = expanding
-							layoutpolicy_vertical = expanding
-							max_width = 140
-							background = {
-								using = Background_Area_Dark
-							}
-							text_single = {
-								raw_text = "Dragons"
-								fontsize = 24
-								align = center
-							}
-							spacer = { size = { 00 10 } }
-							scrollbox = {
-								name = "mages_scrollarea"
-								layoutpolicy_vertical = expanding
-								layoutpolicy_horizontal = expanding
-								max_width = 140
-								blockoverride "scrollbox_content"
-								{
-									fixedgridbox = {
-										addcolumn = 130
-										addrow = 130
-										datamodel = "[HoldingView.GetCountyTitle.GetHolder.MakeScope.GetList('dragon_pit_list')]"
-									
-										item = {
-											button_standard = {
-												parentanchor = top|left
-												size = { 125 125 }
-												align = left
-												datacontext = "[Scope.GetCharacter]"
-												layoutpolicy_vertical = expanding
-												layoutpolicy_horizontal = growing
-												down = "[GetScriptedGui('zz_dragonpit_dragon').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'zz_dragonpit_dragon', Character.MakeScope ).End )]"
-												onclick = "[GetScriptedGui('zz_dragonpit_dragon').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'zz_dragonpit_dragon', Character.MakeScope ).End )]"
-												vbox = {
-													layoutpolicy_horizontal = expanding
-													layoutpolicy_vertical = expanding
-													margin_right = 4
-													spacing = 5
-													portrait_head_small = {}
-													text_single = {
-														text = "[Character.GetNameNoTooltip]"
-													}
-												}
-											}								 
-										}
-									}
-								}
-							}
-							expand = {}
-						}
-						expand = {}
-					}
-					expand = {}
-					vbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding
-						max_width = 140
-						vbox = {
-							layoutpolicy_horizontal = expanding 
-							layoutpolicy_vertical = expanding
-							max_width = 140
-							background = {
-								using = Background_Area_Dark
-							}
-							text_single = {
-								raw_text = "Dragon Rider"
-								fontsize = 24
-								align = top
-							}
-							spacer = { size = { 00 10 } }
-
-							vbox = {
-								layoutpolicy_horizontal = expanding
-								layoutpolicy_vertical = expanding
-								size = { 120 120 }
-								datacontext = "[GetPlayer.MakeScope.Var('zz_dragonpit_dragon').Var('current_rider').Char]"
-								portrait_head_small = {}
-								text_single = {
-									align = left
-									text = "[Character.GetNameNoTooltip]"
-								}
-								expand = {}
-							}
-							expand = {}
-						}
-						expand = {}
-						vbox = {
-							layoutpolicy_horizontal = expanding 
-							layoutpolicy_vertical = expanding
-							max_width = 140
-							background = {
-								using = Background_Area_Dark
-							}
-							text_single = {
-								raw_text = "Actions"
-								fontsize = 24
-								align = top
-							}
-							spacer = { size = { 00 10 } }
-							expand = {}
-							vbox = {
-								size = { 120 460 }
-								layoutpolicy_horizontal = expanding 
-								layoutpolicy_vertical = expanding
-								button_standard = {
-									margin = { 10 10 }
-									text_single = {
-										raw_text = "Suggest Taming"
-										align = center
-									}
-									enabled = "[GetScriptedGui('zz_dragonpit_taming_scheme').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									onclick = "[GetScriptedGui('zz_dragonpit_taming_scheme').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-												
-								}
-								spacer = { size = { 00 05 } }
-								button_standard = {
-									margin = { 10 10 }
-									text_single = {
-										raw_text = "Bond with Dragon"
-										align = center
-									}
-									enabled = "[GetScriptedGui('zz_dragonpit_bond_with_dragon').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									onclick = "[GetScriptedGui('zz_dragonpit_bond_with_dragon').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								}
-								spacer = { size = { 00 05 } }
-								button_standard = {
-									margin = { 10 10 }
-									text_single = {
-										raw_text = "Deepen Bond"
-										align = center
-									}
-									enabled = "[GetScriptedGui('zz_dragonpit_deepen_bond').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-									onclick = "[GetScriptedGui('zz_dragonpit_deepen_bond').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-								}
-								spacer = { size = { 00 05 } }
-								button_standard = {
-									margin = { 10 10 }
-									text_single = {
-										raw_text = "Transfer Dragon"
-										align = center
-										alwaystransparent = yes
-									}
-									onclick = "[GetVariableSystem.Set('dragon_pit_move','open')]"	
-								}
-								expand = {}
-							}
-							expand = {}
-						}
-						expand = {}
-					}
-					expand = {}
-					vbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding
-						vbox = {
-							layoutpolicy_horizontal = expanding
-							layoutpolicy_vertical = expanding
-							max_width = 140
-							background = {
-								using = Background_Area_Dark
-							}
-							text_single = {
-								raw_text = "Dragon Seeds"
-								fontsize = 24
-								align = center
-							}
-							spacer = { size = { 00 10 } }
-							scrollbox = {
-								name = "mages_scrollarea"
-								layoutpolicy_vertical = expanding
-								layoutpolicy_horizontal = expanding
-								max_width = 140
-								blockoverride "scrollbox_content"
-								{
-									fixedgridbox = {
-										addcolumn = 130
-										addrow = 130
-										datamodel = "[HoldingView.GetCountyTitle.GetHolder.MakeScope.GetList('dragonseed_list')]"
-									
-										item = {
-											button_standard = {
-												parentanchor = top|left
-												size = { 125 125 }
-												align = left
-												datacontext = "[Scope.GetCharacter]"
-												layoutpolicy_vertical = expanding
-												layoutpolicy_horizontal = growing
-												down = "[GetScriptedGui('zz_dragonpit_dragonseed').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'zz_dragonseed', Character.MakeScope ).End )]"
-												onclick = "[GetScriptedGui('zz_dragonpit_dragonseed').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'zz_dragonseed', Character.MakeScope ).End )]"
-												vbox = {
-													layoutpolicy_horizontal = expanding
-													layoutpolicy_vertical = expanding
-													margin_right = 4
-													spacing = 5
-													portrait_head_small = {}
-													text_single = {
-														text = "[Character.GetNameNoTooltip]"
-													}
-												}
-											}								 
-										}
-									}
-								}
-							}
-							expand = {}
-						}
-						expand = {}
-					}
-					expand = {}
-				}
-				expand = {}
-			}
+		} 
 	}
 	#AGOT Added
 	agot_county_view_ruins_reconstruct_confirm = {}
-	holding_type_swap_selection_view = {}
-	dragon_swap_pit_selection_view = {}
-
 }
 
 ######################################################
@@ -3393,8 +3004,6 @@ window = {
 													layoutpolicy_horizontal = expanding
 
 													margin_left = 10
-													margin_bottom = 5
-													spacing = 5
 
 													text_label_left = {
 														layoutpolicy_horizontal = expanding
@@ -3868,6 +3477,7 @@ types CountyViewTypes
 		size = { 55 55 }
 		#AGOT Disabled; This removes the ability to swap out disabled buildings
 		# enabled = "[GUIBuildingItem.IsBuildingButtonEnabled]"
+
 		tooltip = "[GUIBuildingItem.GetTooltip]"
 		using = tooltip_ne
 
@@ -3876,7 +3486,10 @@ types CountyViewTypes
 			size = { 100% 100% }
 			onclick = "[GUIBuildingItem.OnClick]"
 			down = "[GUIBuildingItem.IsHighlighted]"
+			tooltip = "[GUIBuildingItem.GetTooltip]"
+			using = tooltip_ne
 
+			block "shortcut" {}
 			block "building_frame" {}
 
 			button_icon = {
@@ -4020,7 +3633,7 @@ types CountyViewTypes
 				texture = "[GUIBuildingItem.GetCurrentOrConstrucingBuilding.GetTypeIcon]"
 			}
 
-			text_single= {
+			text_single = {
 				visible = "[GUIBuildingItem.HasLevel]"
 				text = "[GUIBuildingItem.GetCurrentOrConstrucingBuilding.GetLevel]"
 				parentanchor = bottom|right
@@ -4051,26 +3664,8 @@ types CountyViewTypes
 				size = { 25 25 }
 			}
 		}
-
-		icon = {
-			name = "building_slot"
-			size = { 100% 100% }
-			using = Background_Area
-			visible = "[GUIBuildingItem.IsBuildingSlotShown]"
-		}
-
-		progressbar_standard = {
-			name = "construct_progressbar"
-			visible = "[GUIBuildingItem.IsConstructing]"
-			parentanchor = bottom
-			position = { 0 8 }
-			alwaystransparent = yes
-			size = { 100% 10 }
-			value = "[GUIBuildingItem.GetConstructingProgress]"
-			direction = horizontal
-			tooltip = "[GUIBuildingItem.GetTooltip]"
-		}
 	}
+
 	type building_in_vassal_warning_hbox = hbox
 	{
 		name = "vassal_warning"
