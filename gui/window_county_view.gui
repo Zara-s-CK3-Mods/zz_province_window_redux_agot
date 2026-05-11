@@ -11,7 +11,7 @@ window = {
 	layer = windows_layer
 	#AGOT Modified
 	# size = { 605 750 }
-	size = { 760 850 }
+	size = { 760 950 }
 
 	state = {
 		name = _show
@@ -1041,7 +1041,7 @@ window = {
 				minimumsize = { 0 320 }
 				margin = { 5 5 }
 				#AGOT Added
-				agot_county_view_settlement_buttons = {}
+				
 
 				state = {
 					name = "holding_view_refresh"
@@ -1760,7 +1760,13 @@ window = {
 							mirror = vertical
 						}
 					}
-
+					vbox = {
+						layoutpolicy_vertical = expanding
+						#AGOT Added
+						agot_county_view_restore_ruins_button = {}
+						agot_county_view_settlement_buttons = {}
+						expand = {}
+					}
 					vbox = {
 						layoutpolicy_vertical = expanding
 						allow_outside = yes
@@ -1769,6 +1775,7 @@ window = {
 
 						hbox = {
 							allow_outside = yes
+							
 
 							widget = {
 								datacontext = "[HoldingView.GetTitle.GetLesseeOrHolder]"
@@ -1882,18 +1889,12 @@ window = {
 									}
 								}
 							}
-							#AGOT Added
-							agot_county_view_restore_ruins_button = {}
-							
-							
-
 							zz_building_scroll_grid = {}
-							
+							expand = {}
 						}
+						expand = {}
 					}
-
 					expand = {}
-
 					vbox = {
 						layoutpolicy_vertical = expanding
 						margin_right = 3
@@ -1915,14 +1916,12 @@ window = {
 							}
 						}
 					}
-
+					
 					### BOTTOM RIGHT
 					vbox = {
 						layoutpolicy_vertical = expanding
 						margin_right = 20 
 						margin_bottom = 10
-
-						expand = {}
 
 						flowcontainer = {
 							visible = "[HoldingView.GetTitle.HasHolder]"
@@ -2251,11 +2250,13 @@ window = {
 						expand = {}
 					}
 				}
+				expand = {}
 			}
 		} 
 	}
 	#AGOT Added
 	agot_county_view_ruins_reconstruct_confirm = {}
+	holding_type_swap_selection_view = {}
 }
 
 ######################################################
