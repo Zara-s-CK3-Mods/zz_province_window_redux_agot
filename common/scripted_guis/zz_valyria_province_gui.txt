@@ -98,33 +98,6 @@ zz_valyria_swap_holding_type ={
 	}
 }
 
-zz_valyria_trading_post_tab_enable ={
-	scope = character 	
-	saved_scopes = {
-	}
-	is_shown = {
-		government_has_flag = tradepost
-	}
-}
-
-zz_valyria_has_trading_post ={
-	scope = province 	
-	saved_scopes = {
-		zz_county
-	}
-	is_shown = {
-		scope:zz_county.county = {
-			var:trading_post ?= flag:true
-		}
-	}
-	is_valid = {
-		scope:player = {
-			gold >= 2500
-		}
-	}
-}
-
-
 zz_agot_is_unrestored = {
 	scope = title
 	is_shown = {
@@ -188,11 +161,27 @@ zz_valyria_province_cast_click = {
 			name = zz_selected_mystery_county 
 			value = scope:selected_province.county
 		}
+		# Provinces with no holding built have no owner of their own, so use the county's holder
 		scope:selected_province = {
-			province_owner = {
-				save_scope_as = recipient
+			if = {
+				limit = {
+					exists = province_owner
+				}
+				province_owner = {
+					save_scope_as = recipient
+				}
+			}
+			else = {
+				county.holder ?= {
+					save_scope_as = recipient
+				}
 			}
 		}
-		zz_ui_setup_effect = yes 
+		if = {
+			limit = {
+				exists = scope:recipient
+			}
+			zz_ui_setup_effect = yes
+		}
 	}
 }

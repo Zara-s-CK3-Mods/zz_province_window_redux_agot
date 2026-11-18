@@ -16,6 +16,8 @@ window = {
 	state = {
 		name = _show
 		on_start = "[GetVariableSystem.Set( 'county_view_open', 'true' )]"
+		on_start = "[GetScriptedGui('zz_valyria_province_map_cast').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'selected_province', HoldingView.GetProvince.MakeScope ).End )]" # SOTHM: casts here while the casting map mode is armed
+		on_start = "[CloseGameView( Select_CString( IsMapMode( 'zz_magic_casting' ), 'holding_view', 'drag_drop_test' ) )]" # SOTHM: closes the view after a map cast
 		on_start = "[GetVariableSystem.Set( 'hide_bottom_left_HUD', 'true' )]"
 
 		using = Animation_FadeIn_Standard
@@ -36,6 +38,7 @@ window = {
 	}
 
 	alwaystransparent = yes
+
 
 	vbox = {
 		layoutpolicy_horizontal = expanding
@@ -149,7 +152,7 @@ window = {
 							name = "foreign_county"
 							#AGOT Modified
 							# visible = "[Not(Or(ObjectsEqual( Character.Self, GetPlayer ),Character.IsOtherLiegeOrAbove( GetPlayer )))]"
-							visible = "[And(Not(HasIronThroneTopLiege), Not(Or(ObjectsEqual( Character.Self, GetPlayer ),Character.IsOtherLiegeOrAbove( GetPlayer ))))]"
+							visible = "[And(Not(HasIronThroneTopLiege), Not(Or(ObjectsEqual(Character.Self, GetPlayer), Character.IsOtherLiegeOrAbove(GetPlayer))))]"
 							layoutpolicy_horizontal = expanding
 							#AGOT Modified
 							# text = "HOLDING_VIEW_FOREIGN_COUNTY"
@@ -262,7 +265,9 @@ window = {
 							datacontext = "[HoldingView.GetProvince]"
 							visible = "[IsLandlessAdventurer( GetPlayer )]"
 							widgetid = "move_domcicle_button"
-							size = { 50 50 }
+							#AGOT Modified
+							# size = { 50 50 }
+							size = { 40 40 }
 
 							enabled = "[Domicile.CanMoveTo( Province.Self )]"
 							onclick = "[OpenGameViewData( 'move_domicile_planner', Province.Self )]"
@@ -274,7 +279,9 @@ window = {
 							button_icon = {
 								alwaystransparent = yes
 								parentanchor = center
-								size = { 30 30 }
+								#AGOT Modified
+								# size = { 30 30 }
+								size = { 25 25 }
 								texture = "gfx/interface/icons/flat_icons/move_camp.dds"
 							}
 						}
@@ -1703,7 +1710,7 @@ window = {
 					background = {
 						#AGOT Modified
 						# visible = "[And(NotEqualTo_uint32( HoldingView.GetCountyTitle.GetHolder.GetID, HoldingView.GetTitle.GetLesseeOrHolder.GetID ), HoldingView.GetTitle.HasHolder)]"
-						visible = "[And(ProvinceIsNotHidden, And(NotEqualTo_uint32( HoldingView.GetCountyTitle.GetHolder.GetID, HoldingView.GetTitle.GetLesseeOrHolder.GetID ), HoldingView.GetTitle.HasHolder))]"
+						visible = "[And(ProvinceIsNotHidden, And(NotEqualTo_uint32(HoldingView.GetCountyTitle.GetHolder.GetID, HoldingView.GetTitle.GetLesseeOrHolder.GetID), HoldingView.GetTitle.HasHolder))]"
 
 						texture = "gfx/interface/skinned/mask_pattern.dds"
 						texture_density = 3
@@ -1829,6 +1836,8 @@ window = {
 									allow_outside = yes
 
 									expand = {}
+									#AGOT Added
+									agot_county_view_settlement_buttons = {}
 
 									icon = {
 										name = "church_property"
@@ -1894,7 +1903,9 @@ window = {
 						}
 						expand = {}
 					}
+
 					expand = {}
+
 					vbox = {
 						layoutpolicy_vertical = expanding
 						margin_right = 3
@@ -1916,7 +1927,7 @@ window = {
 							}
 						}
 					}
-					
+
 					### BOTTOM RIGHT
 					vbox = {
 						layoutpolicy_vertical = expanding
@@ -2252,7 +2263,7 @@ window = {
 				}
 				expand = {}
 			}
-		} 
+		}
 	}
 	#AGOT Added
 	agot_county_view_ruins_reconstruct_confirm = {}
